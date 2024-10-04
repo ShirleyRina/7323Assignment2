@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		45AC940F2CB07114005BF350 /* ToneGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AC940E2CB07104005BF350 /* ToneGenerator.swift */; };
 		8D20365A2CA7356100C0D556 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2036592CA7356100C0D556 /* AppDelegate.swift */; };
 		8D20365C2CA7356100C0D556 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D20365B2CA7356100C0D556 /* SceneDelegate.swift */; };
 		8D20365E2CA7356100C0D556 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D20365D2CA7356100C0D556 /* LandingViewController.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		45AC940E2CB07104005BF350 /* ToneGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToneGenerator.swift; sourceTree = "<group>"; };
 		8D2036562CA7356000C0D556 /* 7323Assignment2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 7323Assignment2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D2036592CA7356100C0D556 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8D20365B2CA7356100C0D556 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 		8D2036582CA7356000C0D556 /* 7323Assignment2 */ = {
 			isa = PBXGroup;
 			children = (
+				45AC940E2CB07104005BF350 /* ToneGenerator.swift */,
 				8D2036592CA7356100C0D556 /* AppDelegate.swift */,
 				8D20365B2CA7356100C0D556 /* SceneDelegate.swift */,
 				8D20365D2CA7356100C0D556 /* LandingViewController.swift */,
@@ -145,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DB3A14D2CA73F6900EDA793 /* ModuleAViewController.swift in Sources */,
+				45AC940F2CB07114005BF350 /* ToneGenerator.swift in Sources */,
 				8D20365E2CA7356100C0D556 /* LandingViewController.swift in Sources */,
 				8DB3A14F2CA73F7C00EDA793 /* ModuleBViewController.swift in Sources */,
 				8D20365A2CA7356100C0D556 /* AppDelegate.swift in Sources */,
@@ -300,7 +304,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R49B4A5YKN;
+				DEVELOPMENT_TEAM = Q77SRCSMTX;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = 7323Assignment2/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -328,7 +332,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R49B4A5YKN;
+				DEVELOPMENT_TEAM = Q77SRCSMTX;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = 7323Assignment2/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
