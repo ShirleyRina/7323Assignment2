@@ -11,14 +11,23 @@ import AVFoundation
 
 class ModuleBViewController: UIViewController {
     
-//    var audioEngine = AVAudioEngine()
-//    var inputNode: AVAudioInputNode?
-//    var sampleRate: Float = 44100.0 // Define the sample rate
-    
     var audioEngine = AVAudioEngine()
     var sampleRate: Float = 44100.0 // Define the sample rate
     var toneGenerator: ToneGenerator!
     var previousMagnitude: Float = 0.0 // Declare at the class level
+    var gestureHistory: [String] = []
+    var frequencyShiftHistory: [Float] = []
+    let historyLength = 7
+    let gestureHistoryMaxLength = 10
+    var lastFrequencyShift: Float = 0
+    var gestureConfidence: [String: Int] = ["No Gesture": 0, "Gesture Toward": 0, "Gesture Away": 0]
+    let confidenceThreshold = 2 // Number of consistent detections needed to change gesture
+    var lastGesture: String = "No Gesture"
+    var sameDirectionCount: Int = 0
+    let directionPersistenceThreshold = 3
+    var gestureBuffer: [String] = []
+    let gestureBufferSize = 5
+
 
     
     @IBOutlet weak var fftMagnitudeLabel: UILabel!
@@ -42,13 +51,129 @@ class ModuleBViewController: UIViewController {
             self.fftMagnitudeLabel.text = "Test FFT Magnitude Label"
         }
     }
+    
+    func movingAverage(newValue: Float) -> Float {
+        frequencyShiftHistory.append(newValue)
+        if frequencyShiftHistory.count > historyLength {
+            frequencyShiftHistory.removeFirst()
+        }
+        return frequencyShiftHistory.reduce(0, +) / Float(frequencyShiftHistory.count)
+    }
 
+
+    func detectDopplerShift(fftData: [Float], baseFrequency: Float, sampleRate: Float, previousMagnitude: inout Float) -> String {
+        let magnitudeSpectrum = fftData.map { abs($0) }
+
+        guard let (maxIndex, maxValue) = magnitudeSpectrum.enumerated().max(by: { $0.element < $1.element }) else {
+            print("fftData is empty or no max value found")
+            return "No Gesture"
+        }
+
+        let fftSize = fftData.count * 2
+        let frequencyResolution = sampleRate / Float(fftSize)
+        var detectedFrequency = Float(maxIndex) * frequencyResolution
+
+        // Peak Interpolation
+        if maxIndex > 0 && maxIndex < magnitudeSpectrum.count - 1 {
+            let alpha = magnitudeSpectrum[maxIndex - 1]
+            let beta = magnitudeSpectrum[maxIndex]
+            let gamma = magnitudeSpectrum[maxIndex + 1]
+
+            let correction = 0.5 * (alpha - gamma) / (alpha - 2 * beta + gamma)
+            detectedFrequency += Float(correction) * frequencyResolution
+        }
+
+        let frequencyShift = detectedFrequency - baseFrequency
+
+        // Calculate peak magnitude in dB
+        let peakMagnitudeInDB = 20 * log10(maxValue)
+
+        // Calculate amplitude change
+        let amplitudeChange = peakMagnitudeInDB - previousMagnitude
+        previousMagnitude = peakMagnitudeInDB // Update for next call
+
+        // Debug output
+        print("Detected Frequency: \(detectedFrequency) Hz")
+        print("Base Frequency: \(baseFrequency) Hz")
+        print("Frequency Shift: \(frequencyShift) Hz")
+        print("Peak Magnitude: \(peakMagnitudeInDB) dB")
+        print("Amplitude Change: \(amplitudeChange) dB")
+
+        // Adjust these thresholds based on your observations
+
+        let frequencyThreshold: Float = 0.4
+//        let amplitudeThreshold: Float = 0.2
+
+        let frequencyShiftChange = movingAverage(newValue: frequencyShift - lastFrequencyShift)
+        lastFrequencyShift = frequencyShift
+
+        var instantGesture = "No Gesture"
+        if abs(frequencyShiftChange) < frequencyThreshold {
+            instantGesture = "No Gesture"
+        } else if frequencyShiftChange > frequencyThreshold {
+            instantGesture = "Gesture Toward"
+        } else if frequencyShiftChange < -frequencyThreshold {
+            instantGesture = "Gesture Away"
+        }
+
+        // Update gesture buffer
+        gestureBuffer.append(instantGesture)
+        if gestureBuffer.count > gestureBufferSize {
+            gestureBuffer.removeFirst()
+        }
+
+        // Determine final gesture
+        let gestureCount = gestureBuffer.reduce(into: [:]) { counts, gesture in
+            counts[gesture, default: 0] += 1
+        }
+        let finalGesture = gestureCount.max(by: { $0.value < $1.value })?.key ?? "No Gesture"
+
+        print("Instant Gesture: \(instantGesture), Final Gesture: \(finalGesture)")
+        print("Frequency Shift Change: \(frequencyShiftChange)")
+        print("-------------------")
+
+        return finalGesture
+    }
+
+    func processMicrophoneBuffer(buffer: AVAudioPCMBuffer) {
+        print("processMicrophoneBuffer called")
+        if let channelData = buffer.floatChannelData?[0] {
+            let frameLength = Int(buffer.frameLength)
+            let bufferPointer = UnsafeBufferPointer(start: channelData, count: frameLength)
+            let channelDataArray = Array(bufferPointer)
+            let maxAmplitude = channelDataArray.max() ?? 0.0
+            print("Max amplitude: \(maxAmplitude)")
+        }
+        
+        let frameCount = min(buffer.frameLength, 8192)
+        print("Buffer frame length: \(frameCount)")
+
+        let fftMagnitudes = performFFT(on: buffer, frameCount: frameCount)
+        print("FFT Magnitudes count: \(fftMagnitudes.count)")
+        print("FFT max magnitude: \(fftMagnitudes.max() ?? 0)")
+
+        if !fftMagnitudes.isEmpty {
+            let gesture = detectDopplerShift(fftData: fftMagnitudes, baseFrequency: toneGenerator.frequency, sampleRate: sampleRate, previousMagnitude: &previousMagnitude)
+
+            DispatchQueue.main.async {
+                self.gestureLabel.text = "Gesture: \(gesture)"
+                if let maxMagnitude = fftMagnitudes.max() {
+                    let peakMagnitudeInDB = 20 * log10(maxMagnitude)
+                    self.fftMagnitudeLabel.text = String(format: "Peak Magnitude: %.2f dB", peakMagnitudeInDB)
+                }
+            }
+
+            print("Detected Gesture: \(gesture)")
+            print("Base Frequency: \(toneGenerator.frequency)")
+            print("-------------------")
+        }
+    }
 
     func setupAudioSession() {
         do {
             let audioSession = AVAudioSession.sharedInstance()
             try audioSession.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetooth])
-            try audioSession.setPreferredSampleRate(44100)
+            try audioSession.setPreferredSampleRate(48000)
             try audioSession.setActive(true)
             sampleRate = Float(audioSession.sampleRate)
             print("Audio session is active with sample rate: \(sampleRate)")
@@ -58,7 +183,6 @@ class ModuleBViewController: UIViewController {
     }
 
     
-    // 音频播放方法
     func generateAudioBuffer(frequency: Float) {
         let mainMixer = audioEngine.mainMixerNode
         let outputFormat = mainMixer.outputFormat(forBus: 0) // Get a valid format from the engine
@@ -81,65 +205,8 @@ class ModuleBViewController: UIViewController {
         }
     }
 
-    func detectDopplerShift(fftData: [Float], baseFrequency: Float, sampleRate: Float, previousMagnitude: inout Float) -> String {
-        let magnitudeSpectrum = fftData.map { abs($0) }
 
-        guard let (maxIndex, maxValue) = magnitudeSpectrum.enumerated().max(by: { $0.element < $1.element }) else {
-            print("fftData is empty or no max value found")
-            return "No Gesture"
-        }
-
-        let fftSize = fftData.count * 2 // Because fftData is half the FFT size
-        let frequencyResolution = sampleRate / Float(fftSize)
-        var detectedFrequency = Float(maxIndex) * frequencyResolution
-
-        // Peak Interpolation
-        if maxIndex > 0 && maxIndex < magnitudeSpectrum.count - 1 {
-            let alpha = magnitudeSpectrum[maxIndex - 1]
-            let beta = magnitudeSpectrum[maxIndex]
-            let gamma = magnitudeSpectrum[maxIndex + 1]
-
-            let correction = 0.5 * (alpha - gamma) / (alpha - 2 * beta + gamma)
-            detectedFrequency += Float(correction) * frequencyResolution
-        }
-
-        let frequencyShift = detectedFrequency - baseFrequency
-//        let frequencyShift = baseFrequency - detectedFrequency
-
-
-        // Calculate peak magnitude in dB
-        let peakMagnitudeInDB = 20 * log10(maxValue)
-
-        // Calculate amplitude change
-        let amplitudeChange = peakMagnitudeInDB - previousMagnitude
-        previousMagnitude = peakMagnitudeInDB // Update for next call
-
-        print("Max Value: \(maxValue)")
-        print("Max Index: \(maxIndex)")
-        print("Detected Frequency: \(detectedFrequency) Hz")
-        print("Base Frequency: \(baseFrequency) Hz")
-        print("Frequency Shift: \(frequencyShift) Hz")
-        print("Peak Magnitude: \(peakMagnitudeInDB) dB")
-        print("Amplitude Change: \(amplitudeChange) dB")
-
-        let frequencyThreshold: Float = 5.0 // Adjust based on results
-        let amplitudeThreshold: Float = 1.0 // Adjust based on results
-//        let frequencyThreshold: Float = 0.5 // Lowered for higher sensitivity
-//        let amplitudeThreshold: Float = 0.1 // Adjust based on observations
-
-
-        var gesture = "No Gesture"
-        if frequencyShift > frequencyThreshold && amplitudeChange > amplitudeThreshold {
-            gesture = "Gesture Toward"
-        } else if frequencyShift < -frequencyThreshold && amplitudeChange < -amplitudeThreshold {
-            gesture = "Gesture Away"
-        }
-
-
-        return gesture
-    }
-
-
+ 
     func setupMicrophone() {
         let inputNode = audioEngine.inputNode
         let mainMixer = audioEngine.mainMixerNode
@@ -152,7 +219,7 @@ class ModuleBViewController: UIViewController {
         print("Input node connected to main mixer")
 
         // Install the tap on the input node
-        inputNode.installTap(onBus: 0, bufferSize: 4096, format: inputFormat) { (buffer, time) in
+        inputNode.installTap(onBus: 0, bufferSize: 2048, format: inputFormat) { (buffer, time) in
             self.processMicrophoneBuffer(buffer: buffer)
         }
         print("Microphone tap installed")
@@ -169,59 +236,16 @@ class ModuleBViewController: UIViewController {
     }
     
 
-    
-    func processMicrophoneBuffer(buffer: AVAudioPCMBuffer) {
-        print("processMicrophoneBuffer called")
-//        let frameCount = min(buffer.frameLength, 4096)
-        let frameCount = min(buffer.frameLength, 8192)
-
-        print("Buffer frame length: \(frameCount)")
-
-        // Perform FFT on the buffer
-        let fftMagnitudes = performFFT(on: buffer, frameCount: frameCount)
-        print("FFT Magnitudes: \(fftMagnitudes)")
-
-        if !fftMagnitudes.isEmpty {
-            // Step 4: Analyze FFT data and calculate peak magnitude
-            let peakMagnitude = fftMagnitudes.max() ?? 0
-            let peakMagnitudeInDB = 20 * log10(peakMagnitude)
-
-            // Step 3: Detect gesture based on FFT data
-            let gesture = detectDopplerShift(fftData: fftMagnitudes, baseFrequency: toneGenerator.frequency, sampleRate: sampleRate, previousMagnitude: &previousMagnitude)
-
-            // Update the UI
-            DispatchQueue.main.async {
-                if let gestureLabel = self.gestureLabel, let fftMagnitudeLabel = self.fftMagnitudeLabel {
-                    gestureLabel.text = "Gesture: \(gesture)"
-                    fftMagnitudeLabel.text = String(format: "Peak Magnitude: %.2f dB", peakMagnitudeInDB)
-                } else {
-                    print("Labels are nil")
-                }
-            }
-        }
-    }
-
 
     @IBAction func frequencySliderChanged(_ sender: UISlider) {
         let frequency = sender.value * 3000 + 17000 // Range: 17kHz - 20kHz
+        print("Frequency changed to: \(frequency) Hz")
 
+        toneGenerator.frequency = frequency
 
-        // Stop the current tone
         toneGenerator.stopTone()
 
-        // Play the tone with the new frequency
         toneGenerator.playTone(frequency: frequency)
-    }
-    
-    func updateGestureLabel(fftData: [Float], baseFrequency: Float) {
-//        let gesture = detectDopplerShift(fftData: fftData, baseFrequency: baseFrequency)
-        let gesture = detectDopplerShift(fftData: fftData, baseFrequency: baseFrequency, sampleRate: sampleRate, previousMagnitude: &previousMagnitude)
-
-//        gestureLabel.text = "Gesture: \(gesture)"
-        // Update the gesture label on the main thread
-        DispatchQueue.main.async {
-            self.gestureLabel.text = "Gesture: \(gesture)"
-        }
 
     }
     
@@ -260,9 +284,9 @@ class ModuleBViewController: UIViewController {
         // Create FFT setup
         let fftSetup = vDSP_create_fftsetup(log2n, Int32(kFFTRadix2))!
 
-        // Prepare the complex buffer
         var realp = [Float](repeating: 0.0, count: paddedLength / 2)
         var imagp = [Float](repeating: 0.0, count: paddedLength / 2)
+        
         var splitComplex = DSPSplitComplex(realp: &realp, imagp: &imagp)
 
         // Convert to split complex format
@@ -292,4 +316,3 @@ class ModuleBViewController: UIViewController {
 
 
 }
-
