@@ -152,17 +152,6 @@ class ModuleAViewController: UIViewController {
         }
     }
 
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//
-//        // 使用 guard let 安全解包 audioManager
-//        guard let audioManager = audioManager else {
-//            return // 如果 audioManager 为 nil，直接返回
-//        }
-//        
-//        // 离开页面时暂停音频输入
-//        audioManager.pause()
-//    }
 
 
     /*

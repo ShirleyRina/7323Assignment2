@@ -15,10 +15,7 @@
 		8D2036632CA7356200C0D556 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D2036622CA7356200C0D556 /* Assets.xcassets */; };
 		8D2036662CA7356200C0D556 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 8D2036652CA7356200C0D556 /* Base */; };
 		8D21B4942CB0CB5900542E03 /* FFTHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D21B4932CB0CB5900542E03 /* FFTHelper.swift */; };
-		8D21B49E2CB0CD8B00542E03 /* Novocaine.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D21B49A2CB0CD8B00542E03 /* Novocaine.m */; };
-		8D21B49F2CB0CD8B00542E03 /* AudioFileReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D21B4962CB0CD8B00542E03 /* AudioFileReader.mm */; };
-		8D21B4A02CB0CD8B00542E03 /* AudioFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D21B4982CB0CD8B00542E03 /* AudioFileWriter.m */; };
-		8D21B4A12CB0CD8B00542E03 /* RingBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D21B49C2CB0CD8B00542E03 /* RingBuffer.mm */; };
+		8D61021F2CB1EF37002C28E9 /* Novocaine.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D61021E2CB1EF37002C28E9 /* Novocaine.m */; };
 		8DB3A14D2CA73F6900EDA793 /* ModuleAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB3A14C2CA73F6900EDA793 /* ModuleAViewController.swift */; };
 		8DB3A14F2CA73F7C00EDA793 /* ModuleBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB3A14E2CA73F7C00EDA793 /* ModuleBViewController.swift */; };
 /* End PBXBuildFile section */
@@ -34,15 +31,9 @@
 		8D2036652CA7356200C0D556 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8D2036672CA7356200C0D556 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D21B4932CB0CB5900542E03 /* FFTHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTHelper.swift; sourceTree = "<group>"; };
-		8D21B4952CB0CD8B00542E03 /* AudioFileReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioFileReader.h; sourceTree = "<group>"; };
-		8D21B4962CB0CD8B00542E03 /* AudioFileReader.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioFileReader.mm; sourceTree = "<group>"; };
-		8D21B4972CB0CD8B00542E03 /* AudioFileWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioFileWriter.h; sourceTree = "<group>"; };
-		8D21B4982CB0CD8B00542E03 /* AudioFileWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioFileWriter.m; sourceTree = "<group>"; };
-		8D21B4992CB0CD8B00542E03 /* Novocaine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Novocaine.h; sourceTree = "<group>"; };
-		8D21B49A2CB0CD8B00542E03 /* Novocaine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Novocaine.m; sourceTree = "<group>"; };
-		8D21B49B2CB0CD8B00542E03 /* RingBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RingBuffer.h; sourceTree = "<group>"; };
-		8D21B49C2CB0CD8B00542E03 /* RingBuffer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RingBuffer.mm; sourceTree = "<group>"; };
 		8D21B4A32CB0CF4600542E03 /* 7323Assignment2-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "7323Assignment2-Bridging-Header.h"; sourceTree = "<group>"; };
+		8D61021D2CB1EF25002C28E9 /* Novocaine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Novocaine.h; sourceTree = "<group>"; };
+		8D61021E2CB1EF37002C28E9 /* Novocaine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Novocaine.m; sourceTree = "<group>"; };
 		8DB3A14C2CA73F6900EDA793 /* ModuleAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleAViewController.swift; sourceTree = "<group>"; };
 		8DB3A14E2CA73F7C00EDA793 /* ModuleBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -84,29 +75,15 @@
 				8D20365D2CA7356100C0D556 /* LandingViewController.swift */,
 				8DB3A14C2CA73F6900EDA793 /* ModuleAViewController.swift */,
 				8DB3A14E2CA73F7C00EDA793 /* ModuleBViewController.swift */,
+				8D61021D2CB1EF25002C28E9 /* Novocaine.h */,
+				8D61021E2CB1EF37002C28E9 /* Novocaine.m */,
 				8D20365F2CA7356100C0D556 /* Main.storyboard */,
 				8D2036622CA7356200C0D556 /* Assets.xcassets */,
 				8D2036642CA7356200C0D556 /* LaunchScreen.storyboard */,
 				8D2036672CA7356200C0D556 /* Info.plist */,
 				8D21B4A32CB0CF4600542E03 /* 7323Assignment2-Bridging-Header.h */,
-				8D21B49D2CB0CD8B00542E03 /* Novocaine */,
 			);
 			path = 7323Assignment2;
-			sourceTree = "<group>";
-		};
-		8D21B49D2CB0CD8B00542E03 /* Novocaine */ = {
-			isa = PBXGroup;
-			children = (
-				8D21B4952CB0CD8B00542E03 /* AudioFileReader.h */,
-				8D21B4962CB0CD8B00542E03 /* AudioFileReader.mm */,
-				8D21B4972CB0CD8B00542E03 /* AudioFileWriter.h */,
-				8D21B4982CB0CD8B00542E03 /* AudioFileWriter.m */,
-				8D21B4992CB0CD8B00542E03 /* Novocaine.h */,
-				8D21B49A2CB0CD8B00542E03 /* Novocaine.m */,
-				8D21B49B2CB0CD8B00542E03 /* RingBuffer.h */,
-				8D21B49C2CB0CD8B00542E03 /* RingBuffer.mm */,
-			);
-			path = Novocaine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,13 +158,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DB3A14D2CA73F6900EDA793 /* ModuleAViewController.swift in Sources */,
-				8D21B49E2CB0CD8B00542E03 /* Novocaine.m in Sources */,
-				8D21B49F2CB0CD8B00542E03 /* AudioFileReader.mm in Sources */,
-				8D21B4A02CB0CD8B00542E03 /* AudioFileWriter.m in Sources */,
-				8D21B4A12CB0CD8B00542E03 /* RingBuffer.mm in Sources */,
 				45AC940F2CB07114005BF350 /* ToneGenerator.swift in Sources */,
 				8D20365E2CA7356100C0D556 /* LandingViewController.swift in Sources */,
 				8DB3A14F2CA73F7C00EDA793 /* ModuleBViewController.swift in Sources */,
+				8D61021F2CB1EF37002C28E9 /* Novocaine.m in Sources */,
 				8D20365A2CA7356100C0D556 /* AppDelegate.swift in Sources */,
 				8D20365C2CA7356100C0D556 /* SceneDelegate.swift in Sources */,
 				8D21B4942CB0CB5900542E03 /* FFTHelper.swift in Sources */,
@@ -342,7 +316,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Q77SRCSMTX;
+				DEVELOPMENT_TEAM = R49B4A5YKN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = 7323Assignment2/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -371,7 +345,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Q77SRCSMTX;
+				DEVELOPMENT_TEAM = R49B4A5YKN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = 7323Assignment2/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
