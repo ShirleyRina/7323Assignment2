@@ -84,6 +84,7 @@ class ToneGenerator {
 
         for i in 0..<Int(frameCount) {
             signal[i] = sin(phase)
+//            signal[i] = 0.9 * sin(phase)
             phase += phaseStep
             if phase > Float(2.0 * Double.pi) {
                 phase -= Float(2.0 * Double.pi)
