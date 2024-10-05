@@ -8,7 +8,6 @@
 import UIKit
 import UIKit
 import Accelerate // 用于 FFT
-//import Novocaine
 import AVFoundation
 
 
