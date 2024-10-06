@@ -313,6 +313,33 @@ class ModuleBViewController: UIViewController {
         return normalizedMagnitudes
     }
 
-
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopAudio()
+    }
+    
+    deinit {
+        print("ModuleBViewController is being deinitialized")
+        stopAudio()
+    }
+    
+    func stopAudio() {
+        // 停止音频引擎
+        audioEngine.stop()
+        audioEngine.reset()
+        
+        // 停止音调生成器
+        toneGenerator.stopTone()
+        
+        // 移除麦克风tap
+        audioEngine.inputNode.removeTap(onBus: 0)
+        
+        // 停用音频会话
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch {
+            print("Failed to deactivate audio session: \(error)")
+        }
+    }
 
 }

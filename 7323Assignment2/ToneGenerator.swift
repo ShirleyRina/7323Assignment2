@@ -93,5 +93,10 @@ class ToneGenerator {
 
         return buffer
     }
+    
+    deinit {
+        print("ToneGenerator is being deinitialized")
+        stopTone()
+    }
 }
 
