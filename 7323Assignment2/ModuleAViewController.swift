@@ -4,13 +4,15 @@
 //
 //  Created by shirley on 9/27/24.
 //
-
+extension Int {
+    func nextPowerOf2() -> Int {
+        return 1 << (64 - self.leadingZeroBitCount)
+    }
+}
 import UIKit
 import UIKit
 import Accelerate // 用于 FFT
 import AVFoundation
-
-
 
 
 class ModuleAViewController: UIViewController {
@@ -19,7 +21,8 @@ class ModuleAViewController: UIViewController {
     let audioManager = Novocaine.audioManager()
 
     // FFT 配置
-    let fftSize: Int = 4096 // FFT 大小，必须是 2 的幂次
+//    let fftSize: Int = 4096 // FFT 大小，必须是 2 的幂次
+    var fftSize: Int = 256
     var fft: FFTHelper!
     var microphoneInputBuffer: UnsafeMutablePointer<Float>!
 
@@ -38,28 +41,101 @@ class ModuleAViewController: UIViewController {
         title = "Module A"
         configureAudioSession()
         
+        let session = AVAudioSession.sharedInstance()
+        let bufferFrameSize = Int(session.sampleRate * session.ioBufferDuration)
+        fftSize = 256 // 固定为256，因为这接近实际接收到的帧数
+        print("Adjusted FFT size: \(fftSize)")
+        
         // 初始化 FFT 帮助类
-        fft = FFTHelper(fftSize: Int(Int32(fftSize)))
+        fft = FFTHelper(fftSize: fftSize)
         microphoneInputBuffer = UnsafeMutablePointer<Float>.allocate(capacity: fftSize)
 
         // 开始处理音频输入
         startAudioProcessing()
     }
-    
-    // 配置音频会话的函数
+
     func configureAudioSession() {
         let session = AVAudioSession.sharedInstance()
 
         do {
-            // 设置音频会话类别和选项
-            try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
-            // 激活音频会话
+            try session.setCategory(.playAndRecord, mode: .measurement, options: [.defaultToSpeaker, .mixWithOthers])
+            // 不要设置首选的IO缓冲区持续时间，让系统决定
+            try session.setPreferredSampleRate(48000)
             try session.setActive(true)
+            
             print("Audio session configured and activated.")
+            print("Sample rate: \(session.sampleRate)")
+            print("I/O buffer duration: \(session.ioBufferDuration)")
+            print("Output latency: \(session.outputLatency)")
+            print("Input latency: \(session.inputLatency)")
+            print("Buffer frame size: \(session.sampleRate * session.ioBufferDuration)")
         } catch {
             print("Failed to configure and activate AVAudioSession: \(error)")
         }
     }
+
+    func startAudioProcessing() {
+        audioManager?.inputBlock = { [weak self] (data: UnsafeMutablePointer<Float>?, numFrames: UInt32, numChannels: UInt32) in
+            guard let self = self, let data = data else {
+                print("No audio data received or self is nil")
+                return
+            }
+            
+            let actualFrames = Int(numFrames)
+            print("Received \(actualFrames) frames with \(numChannels) channels")
+            print("Buffer size: \(actualFrames * Int(numChannels) * MemoryLayout<Float>.size) bytes")
+            
+            // 检查接收到的帧数是否符合预期
+            if actualFrames < 1 || actualFrames > 1024 { // 假设的合理范围
+                print("Warning: Unexpected number of frames received: \(actualFrames)")
+                return
+            }
+            
+            // 创建一个临时缓冲区，大小为实际接收到的帧数
+            var tempBuffer = [Float](repeating: 0, count: actualFrames)
+            memcpy(&tempBuffer, data, actualFrames * MemoryLayout<Float>.size)
+            
+            DispatchQueue.global(qos: .userInitiated).async {
+                // 如果实际帧数小于FFT大小，用零填充
+                if actualFrames < self.fftSize {
+                    tempBuffer.append(contentsOf: [Float](repeating: 0, count: self.fftSize - actualFrames))
+                }
+                
+                // 执行FFT
+                self.fft.performFFT(&tempBuffer, numSamples: self.fftSize)
+                
+                let (frequency1, frequency2) = self.getTwoLoudestFrequencies()
+                
+                DispatchQueue.main.async {
+                    self.freqLabel1.text = String(format: "Frequency 1: %.2f Hz", frequency1)
+                    self.freqLabel2.text = String(format: "Frequency 2: %.2f Hz", frequency2)
+                    self.detectVowel(frequency1: frequency1, frequency2: frequency2)
+                }
+            }
+        }
+        
+        // 启动音频处理
+        audioManager?.play()
+        
+        // 添加一些基本的状态检查
+//        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+//            guard let self = self else { return }
+//            
+//            if let isRunning = self.audioManager?.isRunning {
+//                if !isRunning {
+//                    print("Warning: Audio manager is not running")
+//                }
+//            } else {
+//                print("Error: Unable to check audio manager status")
+//            }
+//            
+//            // 检查采样率
+//            if let samplingRate = self.audioManager?.samplingRate, samplingRate <= 0 {
+//                print("Error: Invalid sampling rate: \(samplingRate)")
+//            }
+//        }
+    }
+
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -71,41 +147,7 @@ class ModuleAViewController: UIViewController {
             print("Failed to deactivate audio session: \(error)")
         }
     }
-    
-    
-    func startAudioProcessing() {
-        // 启动麦克风输入并处理 FFT
-        audioManager?.inputBlock = { (data: UnsafeMutablePointer<Float>?, numFrames: UInt32, numChannels: UInt32) in
-            
-            // 确保 data 不为 nil
-            guard let data = data else {
-                // 如果 data 是 nil，跳过这次处理
-                return
-            }
-            
-            // 执行 FFT 分析
-            self.fft.performFFT(data, numSamples: Int(numFrames))
-            
-            // 获取两个最大频率
-            let (frequency1, frequency2) = self.getTwoLoudestFrequencies()
-            
-            // 在主线程更新 UI
-            DispatchQueue.main.async {
-                if frequency1 > 0 {
-                    self.freqLabel1.text = String(format: "Frequency 1: %.2f Hz", frequency1)
-                }
-                if frequency2 > 0 {
-                    self.freqLabel2.text = String(format: "Frequency 2: %.2f Hz", frequency2)
-                }
-                
-                // 检测元音 'oooo' 和 'ahhhh'
-                self.detectVowel(frequency1: frequency1, frequency2: frequency2)
-            }
-        }
-        
-        // 启动音频管理器
-        audioManager?.play()
-    }
+
 
 
     func getTwoLoudestFrequencies() -> (Float, Float) {

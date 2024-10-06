@@ -23,6 +23,7 @@ class FFTHelper {
     private var splitComplex: DSPSplitComplex
 
     // 初始化 FFT 设置
+
     init(fftSize: Int) {
         self.n = fftSize
         self.log2n = vDSP_Length(log2(Float(fftSize)))
@@ -47,12 +48,19 @@ class FFTHelper {
         self.splitComplex = DSPSplitComplex(realp: &realp, imagp: &imagp)
     }
 
-    // 执行 FFT
     func performFFT(_ inputBuffer: UnsafeMutablePointer<Float>, numSamples: Int) {
+        let actualSamples = min(numSamples, windowSize)
         var windowedInput = [Float](repeating: 0.0, count: windowSize)
         
-        // 应用 Hanning 窗口
-        vDSP_vmul(inputBuffer, 1, window, 1, &windowedInput, 1, vDSP_Length(windowSize))
+        // 只处理实际的样本数
+        vDSP_vmul(inputBuffer, 1, window, 1, &windowedInput, 1, vDSP_Length(actualSamples))
+        
+        // 将剩余的样本填充为 0
+        if actualSamples < windowSize {
+            windowedInput[actualSamples..<windowSize].withUnsafeMutableBufferPointer { buffer in
+                buffer.baseAddress?.initialize(repeating: 0, count: windowSize - actualSamples)
+            }
+        }
 
         // 将实部复制到复数结构中，虚部保持为 0
         windowedInput.withUnsafeBufferPointer { pointer in
@@ -69,7 +77,6 @@ class FFTHelper {
         vDSP_vsmul(splitComplex.realp, 1, &scale, splitComplex.realp, 1, vDSP_Length(nOver2))
         vDSP_vsmul(splitComplex.imagp, 1, &scale, splitComplex.imagp, 1, vDSP_Length(nOver2))
     }
-    
     // 获取频率对应的振幅值
     func getFFTOutput() -> [Float] {
         var magnitudes = [Float](repeating: 0.0, count: nOver2)
