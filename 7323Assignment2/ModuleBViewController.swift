@@ -324,22 +324,23 @@ class ModuleBViewController: UIViewController {
     }
     
     func stopAudio() {
-        // 停止音频引擎
+        // Stop the audio engine
         audioEngine.stop()
         audioEngine.reset()
         
-        // 停止音调生成器
+        // Stop the tone generator
         toneGenerator.stopTone()
         
-        // 移除麦克风tap
+        // Remove the microphone tap
         audioEngine.inputNode.removeTap(onBus: 0)
         
-        // 停用音频会话
+        // Deactivate the audio session
         do {
             try AVAudioSession.sharedInstance().setActive(false)
         } catch {
             print("Failed to deactivate audio session: \(error)")
         }
     }
+
 
 }

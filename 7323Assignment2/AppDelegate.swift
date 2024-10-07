@@ -12,22 +12,22 @@ import AVFoundation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // 音频会话配置
+        // Audio session configuration
         configureAudioSession()
         
         return true
     }
 
-    // 配置音频会话
+    // Configure the audio session
     func configureAudioSession() {
         do {
-            // 获取音频会话实例
+            // Get the instance of the audio session
             let audioSession = AVAudioSession.sharedInstance()
             
-            // 设置音频会话类别和选项
+            // Set the audio session category and options
             try audioSession.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetooth])
             
-            // 激活音频会话
+            // Activate the audio session
             try audioSession.setActive(true)
             
             print("Audio session successfully configured.")
@@ -43,10 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // 当用户丢弃场景时调用
+        // Called when the user discards a scene
     }
 }
-
-
-
-

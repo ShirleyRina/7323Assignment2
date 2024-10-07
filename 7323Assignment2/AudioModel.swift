@@ -104,22 +104,23 @@ class AudioModel {
     // MARK: Audiocard Callbacks
     // in obj-C it was (^InputBlock)(float *data, UInt32 numFrames, UInt32 numChannels)
     // and in swift this translates to:
-    private func handleMicrophone (data:Optional<UnsafeMutablePointer<Float>>, numFrames:UInt32, numChannels: UInt32) {
-        // copy samples from the microphone into circular buffer
-    print("handleMicrophone called with \(numFrames) frames and \(numChannels) channels")
+    private func handleMicrophone(data: Optional<UnsafeMutablePointer<Float>>, numFrames: UInt32, numChannels: UInt32) {
+        // Copy samples from the microphone into the circular buffer
+        print("handleMicrophone called with \(numFrames) frames and \(numChannels) channels")
         
         if let arrayData = data {
-            // 打印前 10 个麦克风输入样本，确认数据被接收
+            // Print the first 10 microphone input samples to confirm data reception
             for i in 0..<min(10, Int(numFrames)) {
                 print("Microphone data sample \(i): \(arrayData[i])")
             }
             
-            // 将接收到的音频数据添加到 circular buffer
+            // Add the received audio data to the circular buffer
             self.inputBuffer?.addNewFloatData(arrayData, withNumSamples: Int64(numFrames))
         } else {
             print("No microphone data received")
         }
     }
+
     
     
 }

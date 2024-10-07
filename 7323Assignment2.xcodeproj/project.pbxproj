@@ -77,9 +77,9 @@
 		8D2036582CA7356000C0D556 /* 7323Assignment2 */ = {
 			isa = PBXGroup;
 			children = (
-				45AC940E2CB07104005BF350 /* ToneGenerator.swift */,
 				8D2036592CA7356100C0D556 /* AppDelegate.swift */,
 				8D20365B2CA7356100C0D556 /* SceneDelegate.swift */,
+				45AC940E2CB07104005BF350 /* ToneGenerator.swift */,
 				8D20365D2CA7356100C0D556 /* LandingViewController.swift */,
 				8DB3A14C2CA73F6900EDA793 /* ModuleAViewController.swift */,
 				8DB3A14E2CA73F7C00EDA793 /* ModuleBViewController.swift */,
@@ -334,10 +334,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R49B4A5YKN;
+				DEVELOPMENT_TEAM = 2VC6YTM2SL;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = 7323Assignment2/Info.plist;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs access to the microphone for audio processing.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs access to the microphone for audio analysis.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -349,7 +349,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = zhangsan5323Assignment2;
+				PRODUCT_BUNDLE_IDENTIFIER = heping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "7323Assignment2/7323Assignment2-Bridging-Header.h";
@@ -365,10 +365,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R49B4A5YKN;
+				DEVELOPMENT_TEAM = 2VC6YTM2SL;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = 7323Assignment2/Info.plist;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs access to the microphone for audio processing.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs access to the microphone for audio analysis.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -380,7 +380,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = zhangsan5323Assignment2;
+				PRODUCT_BUNDLE_IDENTIFIER = heping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "7323Assignment2/7323Assignment2-Bridging-Header.h";

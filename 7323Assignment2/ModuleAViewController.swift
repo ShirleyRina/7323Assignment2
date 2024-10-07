@@ -12,7 +12,7 @@ import AVFoundation
 
 class ModuleAViewController: UIViewController {
     
-    // Novocaine 实例，用于处理麦克风输入
+    // Novocaine instance used for handling microphone input
     //let audioManager = Novocaine.audioManager()
 
     let AUDIO_BUFFER_SIZE = 1024 * 4
@@ -47,14 +47,14 @@ class ModuleAViewController: UIViewController {
        
     @objc
     func updateLabels() {
-        // 打印 FFT 数据
+        // Print FFT data
         print("FFT Data: \(self.audio.fftData)")
 
         // Find the two largest frequencies and update labels
         if let (freq1, freq2) = findTwoLargestFrequencies() {
             print("Found frequencies: \(freq1), \(freq2)")
             
-            DispatchQueue.main.async { // 确保 UI 更新在主线程上
+            DispatchQueue.main.async { // Ensure UI updates on the main thread
                 self.freqLabel1.text = String(format: "Freq 1: %.2f Hz", freq1)
                 self.freqLabel2.text = String(format: "Freq 2: %.2f Hz", freq2)
                 
@@ -69,6 +69,7 @@ class ModuleAViewController: UIViewController {
             print("No valid frequencies detected.")
         }
     }
+
 
 
         func findTwoLargestFrequencies() -> (Float, Float)? {
