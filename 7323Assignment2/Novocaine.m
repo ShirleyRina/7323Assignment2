@@ -424,7 +424,7 @@ static pthread_mutex_t outputAudioFileLock;
 //    _outputFormat.mSampleRate = 44100.0;
     _inputFormat.mSampleRate = self.samplingRate;
     _outputFormat.mSampleRate = self.samplingRate;
-    self.samplingRate = _inputFormat.mSampleRate;
+    // self.samplingRate = _inputFormat.mSampleRate;
     self.numBytesPerSample = _inputFormat.mBitsPerChannel / 8;
     
     size = sizeof(AudioStreamBasicDescription);
