@@ -111,9 +111,9 @@ class ModuleBViewController: UIViewController {
         if abs(frequencyShiftChange) < frequencyThreshold {
             instantGesture = "No Gesture"
         } else if frequencyShiftChange > frequencyThreshold {
-            instantGesture = "Gesture Toward"
-        } else if frequencyShiftChange < -frequencyThreshold {
             instantGesture = "Gesture Away"
+        } else if frequencyShiftChange < -frequencyThreshold {
+            instantGesture = "Gesture Toward"
         }
 
         // Update gesture buffer
