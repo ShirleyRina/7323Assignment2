@@ -1,7 +1,8 @@
 //
 //  AppDelegate.swift
 //  7323Assignment2
-//
+//  team3AssignmentTwo
+//  Team members: Shuangling Zhao, Tong Li, Ping He
 //  Created by shirley on 9/27/24.
 //
 
