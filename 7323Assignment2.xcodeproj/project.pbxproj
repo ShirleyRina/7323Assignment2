@@ -14,8 +14,11 @@
 		8D2036612CA7356100C0D556 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 8D2036602CA7356100C0D556 /* Base */; };
 		8D2036632CA7356200C0D556 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D2036622CA7356200C0D556 /* Assets.xcassets */; };
 		8D2036662CA7356200C0D556 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 8D2036652CA7356200C0D556 /* Base */; };
-		8D21B4942CB0CB5900542E03 /* FFTHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D21B4932CB0CB5900542E03 /* FFTHelper.swift */; };
-		8D61021F2CB1EF37002C28E9 /* Novocaine.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D61021E2CB1EF37002C28E9 /* Novocaine.m */; };
+		8D4F49642CB36E8400D892AA /* AudioModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4F49632CB36E8400D892AA /* AudioModel.swift */; };
+		8D4F49672CB36EBA00D892AA /* Novocaine.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4F49662CB36EBA00D892AA /* Novocaine.m */; };
+		8D4F496A2CB36EFD00D892AA /* FFTHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4F49692CB36EFD00D892AA /* FFTHelper.m */; };
+		8D4F496D2CB3705E00D892AA /* CircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4F496C2CB3705E00D892AA /* CircularBuffer.m */; };
+		8D4F49702CB3707D00D892AA /* AudioFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4F496F2CB3707D00D892AA /* AudioFileReader.m */; };
 		8DB3A14D2CA73F6900EDA793 /* ModuleAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB3A14C2CA73F6900EDA793 /* ModuleAViewController.swift */; };
 		8DB3A14F2CA73F7C00EDA793 /* ModuleBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB3A14E2CA73F7C00EDA793 /* ModuleBViewController.swift */; };
 /* End PBXBuildFile section */
@@ -30,10 +33,16 @@
 		8D2036622CA7356200C0D556 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D2036652CA7356200C0D556 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8D2036672CA7356200C0D556 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8D21B4932CB0CB5900542E03 /* FFTHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTHelper.swift; sourceTree = "<group>"; };
 		8D21B4A32CB0CF4600542E03 /* 7323Assignment2-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "7323Assignment2-Bridging-Header.h"; sourceTree = "<group>"; };
-		8D61021D2CB1EF25002C28E9 /* Novocaine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Novocaine.h; sourceTree = "<group>"; };
-		8D61021E2CB1EF37002C28E9 /* Novocaine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Novocaine.m; sourceTree = "<group>"; };
+		8D4F49632CB36E8400D892AA /* AudioModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioModel.swift; sourceTree = "<group>"; };
+		8D4F49652CB36EA800D892AA /* Novocaine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Novocaine.h; sourceTree = "<group>"; };
+		8D4F49662CB36EBA00D892AA /* Novocaine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Novocaine.m; sourceTree = "<group>"; };
+		8D4F49682CB36EF400D892AA /* FFTHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTHelper.h; sourceTree = "<group>"; };
+		8D4F49692CB36EFD00D892AA /* FFTHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTHelper.m; sourceTree = "<group>"; };
+		8D4F496B2CB3705700D892AA /* CircularBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
+		8D4F496C2CB3705E00D892AA /* CircularBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircularBuffer.m; sourceTree = "<group>"; };
+		8D4F496E2CB3707700D892AA /* AudioFileReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioFileReader.h; sourceTree = "<group>"; };
+		8D4F496F2CB3707D00D892AA /* AudioFileReader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioFileReader.m; sourceTree = "<group>"; };
 		8DB3A14C2CA73F6900EDA793 /* ModuleAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleAViewController.swift; sourceTree = "<group>"; };
 		8DB3A14E2CA73F7C00EDA793 /* ModuleBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,12 +80,18 @@
 				45AC940E2CB07104005BF350 /* ToneGenerator.swift */,
 				8D2036592CA7356100C0D556 /* AppDelegate.swift */,
 				8D20365B2CA7356100C0D556 /* SceneDelegate.swift */,
-				8D21B4932CB0CB5900542E03 /* FFTHelper.swift */,
 				8D20365D2CA7356100C0D556 /* LandingViewController.swift */,
 				8DB3A14C2CA73F6900EDA793 /* ModuleAViewController.swift */,
 				8DB3A14E2CA73F7C00EDA793 /* ModuleBViewController.swift */,
-				8D61021D2CB1EF25002C28E9 /* Novocaine.h */,
-				8D61021E2CB1EF37002C28E9 /* Novocaine.m */,
+				8D4F49632CB36E8400D892AA /* AudioModel.swift */,
+				8D4F49652CB36EA800D892AA /* Novocaine.h */,
+				8D4F49662CB36EBA00D892AA /* Novocaine.m */,
+				8D4F49682CB36EF400D892AA /* FFTHelper.h */,
+				8D4F49692CB36EFD00D892AA /* FFTHelper.m */,
+				8D4F496B2CB3705700D892AA /* CircularBuffer.h */,
+				8D4F496C2CB3705E00D892AA /* CircularBuffer.m */,
+				8D4F496E2CB3707700D892AA /* AudioFileReader.h */,
+				8D4F496F2CB3707D00D892AA /* AudioFileReader.m */,
 				8D20365F2CA7356100C0D556 /* Main.storyboard */,
 				8D2036622CA7356200C0D556 /* Assets.xcassets */,
 				8D2036642CA7356200C0D556 /* LaunchScreen.storyboard */,
@@ -157,14 +172,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D4F496D2CB3705E00D892AA /* CircularBuffer.m in Sources */,
 				8DB3A14D2CA73F6900EDA793 /* ModuleAViewController.swift in Sources */,
 				45AC940F2CB07114005BF350 /* ToneGenerator.swift in Sources */,
 				8D20365E2CA7356100C0D556 /* LandingViewController.swift in Sources */,
 				8DB3A14F2CA73F7C00EDA793 /* ModuleBViewController.swift in Sources */,
-				8D61021F2CB1EF37002C28E9 /* Novocaine.m in Sources */,
 				8D20365A2CA7356100C0D556 /* AppDelegate.swift in Sources */,
+				8D4F496A2CB36EFD00D892AA /* FFTHelper.m in Sources */,
+				8D4F49642CB36E8400D892AA /* AudioModel.swift in Sources */,
+				8D4F49702CB3707D00D892AA /* AudioFileReader.m in Sources */,
+				8D4F49672CB36EBA00D892AA /* Novocaine.m in Sources */,
 				8D20365C2CA7356100C0D556 /* SceneDelegate.swift in Sources */,
-				8D21B4942CB0CB5900542E03 /* FFTHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,7 +334,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2VC6YTM2SL;
+				DEVELOPMENT_TEAM = R49B4A5YKN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = 7323Assignment2/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs access to the microphone for audio processing.";
@@ -325,12 +343,13 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = zhangsan.5323Assignment2;
+				PRODUCT_BUNDLE_IDENTIFIER = zhangsan5323Assignment2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "7323Assignment2/7323Assignment2-Bridging-Header.h";
@@ -346,7 +365,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2VC6YTM2SL;
+				DEVELOPMENT_TEAM = R49B4A5YKN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = 7323Assignment2/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs access to the microphone for audio processing.";
@@ -355,12 +374,13 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = zhangsan.5323Assignment2;
+				PRODUCT_BUNDLE_IDENTIFIER = zhangsan5323Assignment2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "7323Assignment2/7323Assignment2-Bridging-Header.h";
