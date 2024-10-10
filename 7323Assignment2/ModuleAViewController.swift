@@ -67,6 +67,12 @@ class ModuleAViewController: UIViewController {
             }
         } else {
             print("No valid frequencies detected.")
+            // If no valid frequencies are found, update the UI to show "Noise"
+            DispatchQueue.main.async { // Ensure UI updates on the main thread
+                self.freqLabel1.text = "Noise"
+                self.freqLabel2.text = "Noise"
+                self.vowelLabel.text = "Detected: --"
+            }
         }
     }
 
@@ -82,6 +88,9 @@ class ModuleAViewController: UIViewController {
             var max1: (index: Int, magnitude: Float) = (-1, 0.0)
             var max2: (index: Int, magnitude: Float) = (-1, 0.0)
             
+            // Noise detection parameter: set the minimum amplitude threshold
+            let minMagnitudeThreshold: Float = 0.1
+            
             for i in 1..<(fftData.count / 2) {
                 let magnitude = fftData[i]
                 
@@ -91,6 +100,11 @@ class ModuleAViewController: UIViewController {
                 } else if magnitude > max2.magnitude && abs(binWidth * Float(i) - binWidth * Float(max1.index)) >= 50.0 {
                     max2 = (i, magnitude)
                 }
+            }
+            
+            // Noise detection: if the amplitude is below the threshold, return "noise"
+            if max1.magnitude < minMagnitudeThreshold || max2.magnitude < minMagnitudeThreshold {
+                return nil
             }
             
             // Convert FFT bin indices to frequencies
