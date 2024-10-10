@@ -111,8 +111,9 @@ class ModuleAViewController: UIViewController {
             let freq1 = binWidth * Float(max1.index)
             let freq2 = binWidth * Float(max2.index)
             
+            // Frequency correction: the displayed frequency is approximately 10% lower than the actual frequency due to hardware issues, so multiply by 1.09
             if max1.magnitude > magnitudeThreshold && max2.magnitude > magnitudeThreshold {
-                return (freq1, freq2)
+                return (freq1*1.086, freq2*1.086)
             }
             return nil
         }
