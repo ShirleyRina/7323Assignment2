@@ -145,7 +145,7 @@ class ModuleBViewController: UIViewController {
             print("Max amplitude: \(maxAmplitude)")
         }
         
-        let frameCount = min(buffer.frameLength, 8192)
+        let frameCount = min(buffer.frameLength, 16384)
         print("Buffer frame length: \(frameCount)")
 
         let fftMagnitudes = performFFT(on: buffer, frameCount: frameCount)
