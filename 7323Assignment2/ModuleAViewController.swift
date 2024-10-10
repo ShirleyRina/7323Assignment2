@@ -76,47 +76,48 @@ class ModuleAViewController: UIViewController {
         }
     }
 
-
-
-        func findTwoLargestFrequencies() -> (Float, Float)? {
-            let fftData = self.audio.fftData
+    
+    func findTwoLargestFrequencies() -> (Float, Float)? {
+        let fftData = self.audio.fftData
+        
+        // Peak detection: find two largest peaks in FFT data
+        let sampleRate: Float = 44100.0
+        let binWidth = sampleRate / Float(AUDIO_BUFFER_SIZE)
+        
+        var max1: (index: Int, magnitude: Float) = (-1, 0.0)
+        var max2: (index: Int, magnitude: Float) = (-1, 0.0)
+        
+        // Noise detection parameter: set the minimum amplitude threshold
+        let minMagnitudeThreshold: Float = 0.1
+        
+        for i in 1..<(fftData.count / 2) {
+            let magnitude = fftData[i]
             
-            // Peak detection: find two largest peaks in FFT data, 50Hz apart
-            let sampleRate: Float = 44100.0
-            let binWidth = sampleRate / Float(AUDIO_BUFFER_SIZE)
-            
-            var max1: (index: Int, magnitude: Float) = (-1, 0.0)
-            var max2: (index: Int, magnitude: Float) = (-1, 0.0)
-            
-            // Noise detection parameter: set the minimum amplitude threshold
-            let minMagnitudeThreshold: Float = 0.1
-            
-            for i in 1..<(fftData.count / 2) {
-                let magnitude = fftData[i]
-                
-                if magnitude > max1.magnitude {
-                    max2 = max1 // Shift the first max to the second
-                    max1 = (i, magnitude)
-                } else if magnitude > max2.magnitude && abs(binWidth * Float(i) - binWidth * Float(max1.index)) >= 50.0 {
-                    max2 = (i, magnitude)
+            if magnitude > max1.magnitude {
+                // Check if it is too close to the first peak
+                if abs(Float(i) - Float(max1.index)) * binWidth > 50.0 {
+                    max2 = max1 // Move the first peak to the second
                 }
+                max1 = (i, magnitude)
+            } else if magnitude > max2.magnitude && abs(Float(i) - Float(max1.index)) * binWidth > 50.0 {
+                // Ensure there is enough frequency difference between max2 and max1
+                max2 = (i, magnitude)
             }
-            
-            // Noise detection: if the amplitude is below the threshold, return "noise"
-            if max1.magnitude < minMagnitudeThreshold || max2.magnitude < minMagnitudeThreshold {
-                return nil
-            }
-            
-            // Convert FFT bin indices to frequencies
-            let freq1 = binWidth * Float(max1.index)
-            let freq2 = binWidth * Float(max2.index)
-            
-            // Frequency correction: the displayed frequency is approximately 10% lower than the actual frequency due to hardware issues, so multiply by 1.09
-            if max1.magnitude > magnitudeThreshold && max2.magnitude > magnitudeThreshold {
-                return (freq1*1.086, freq2*1.086)
-            }
+        }
+        
+        // Noise detection: if the amplitude is below the threshold, return nil to indicate noise
+        if max1.magnitude < minMagnitudeThreshold && max2.magnitude < minMagnitudeThreshold {
             return nil
         }
+        
+        // Convert FFT bin indices to frequencies
+        let freq1 = binWidth * Float(max1.index)
+        let freq2 = binWidth * Float(max2.index)
+        
+        // Frequency correction: apply correction factor if necessary (e.g., due to hardware)
+        return (freq1 * 1.086, freq2 * 1.086)
+    }
+
 
         func detectVowel(freq1: Float, freq2: Float) -> String {
             // Simple detection based on frequency patterns
